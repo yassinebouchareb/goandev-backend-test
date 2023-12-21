@@ -10,7 +10,7 @@ class Genre extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title'];
+    protected $fillable = ['id', 'title'];
 
     /**
      * Retrieve the movies associated with this model.
@@ -19,7 +19,7 @@ class Genre extends Model
      */
     public function movies(): BelongsToMany
     {
-        return $this->belongsToMany(Movie::class);
+        return $this->belongsToMany(Movie::class)->withTimestamps();
     }
 
 }
