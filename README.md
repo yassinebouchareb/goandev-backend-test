@@ -1,5 +1,5 @@
 ## GO&DEV Movies App
-    <img width="800" alt="image" src="https://github.com/yassinebouchareb/goandev-backend-test/assets/40309534/bb1d6cd6-3e33-4346-90c2-4fecc186fccf">
+    ![preview](https://github.com/yassinebouchareb/goandev-backend-test/assets/40309534/0c9de779-5e25-4abb-90b2-427d39209163)
 
     This is a simple application that have a console command to fetch movies and genres from The Database Movies API and store them in Database, the project is running over Dockeer using Laravel Sail.
     The app Has 2 pages : 
