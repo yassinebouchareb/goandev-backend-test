@@ -5,6 +5,15 @@
         </h2>
     </x-slot>
 
+    @if(session()->has('message'))
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
+            <strong class="font-bold">{{ session('message') }}</strong>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="show = false">
+              <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+        </div>
+     @endif
+
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 grid grid-cols-6 gap-4 mb-2">
         @forelse ($movies as $movie)
             <div wire:key="{{ $movie->id }}" class="mb-4 bg-white rounded shadow-lg flex flex-col justify-between">
@@ -34,7 +43,7 @@
                     </div>
                 </div>
                 <div class="px-3 pt-4 pb-2 border-t border-gray-200">
-                    <button class="inline-block bg-gray-600 rounded-md px-3 py-1 text-xs font-semibold text-white mr-1 mb-2">
+                    <button wire:click="confirmEditMovie({{ $movie->id }})" class="inline-block bg-gray-600 rounded-md px-3 py-1 text-xs font-semibold text-white mr-1 mb-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                             <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
                             <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
@@ -66,4 +75,34 @@
         </div>
     @endif
 
+    {{-- Modal Section --}}
+    <x-dialog-modal wire:model="showingEditModal">
+        <x-slot name="title">
+            Edit movie
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="name" value="{{ __('Title') }}" />
+                <x-input id="name" type="text" class="mt-1 block w-full" wire:model="title" />
+                <x-input-error for="title" class="mt-2" />
+            </div>
+
+            <div class="col-span-6 sm:col-span-4 mt-4">
+                <x-label for="description" value="{{ __('Description') }}" />
+                <textarea id="description" type="text" class="mt-1 block w-full" wire:model="description"></textarea>
+                <x-input-error for="description" class="mt-2" />
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('showingEditModal', false)">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-button class="ml-2" wire:click="update">
+                {{ __('Save') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
 </div>
