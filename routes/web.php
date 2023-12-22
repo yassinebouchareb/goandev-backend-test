@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\MovieDetail;
 use App\Livewire\MoviesList;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,5 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/movies', MoviesList::class)->name('movies');
+    Route::get('/movies/{id}', MovieDetail::class)->name('movies.show');
 });

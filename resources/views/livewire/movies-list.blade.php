@@ -5,12 +5,13 @@
         </h2>
     </x-slot>
 
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 grid grid-cols-6 gap-4 space-y-reverse mb-2">
-        @foreach ($movies as $movie)
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 grid grid-cols-6 gap-4 mb-2">
+        @forelse ($movies as $movie)
             <div wire:key="{{ $movie->id }}" class="mb-4 bg-white rounded shadow-lg flex flex-col justify-between">
                 <div class="flex flex-col justify-between">
-
-                    <img class="w-full" src="https://image.tmdb.org/t/p/w500/{{ $movie->image_url }}" alt="Sunset in the mountains">
+                    <a href="{{ route('movies.show', $movie->api_id) }}">
+                        <img class="w-full" src="https://image.tmdb.org/t/p/w500/{{ $movie->image_url }}" alt="Sunset in the mountains">
+                    </a>
                     <div class="px-3 py-4">
                         <div class="flex mb-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FDCC0D" class="w-5 h-5">
@@ -19,7 +20,9 @@
                             <strong class="pl-2 text-sm">{{ $movie->rating }}</strong>
                         </div>
 
-                        <div class="font-bold text-base mb-2">{{ $movie->title }}</div>
+                        <div class="font-bold text-base mb-2">
+                            <a href="{{ route('movies.show', $movie->api_id) }}">{{ $movie->title }}</a>
+                        </div>
                         <p class="text-gray-700 text-sm">
                             {{ str($movie->description)->words(10) }}
                         </p>
@@ -44,12 +47,23 @@
                     </button>
                 </div>
             </div>
-        @endforeach
-
+        @empty
+            <div class="max-w-7xl col-span-6 grid-flow-dense flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">No movies found</span> Please run the artisan command app:fetch-movies-and-genres to populate the database.
+                </div>
+            </div>
+        @endforelse
     </div>
 
-    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        {{ $movies->links() }}
-    </div>
+    @if($movies)
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            {{ $movies->links() }}
+        </div>
+    @endif
 
 </div>
