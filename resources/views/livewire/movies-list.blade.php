@@ -5,6 +5,19 @@
         </h2>
     </x-slot>
 
+    <div class="max-w-7xl flex justify-between mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <input type="text" wire:model.live.debounce.300ms="searchTerm" class="mt-2" placeholder="Search movies..." />
+        <label for="genre" class="mt-2">
+            {{ __('Genre') }}:
+            <select wire:model.change="genre" class="mt-2">
+                <option value="0">All</option>
+                @foreach ($genres as $genre)
+                    <option value="{{ $genre['title'] }}">{{ $genre['title'] }}</option>
+                @endforeach
+            </select>
+        </label>
+    </div>
+
     @if(session()->has('message'))
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert" x-data="{ show: true }" x-show="show">
             <strong class="font-bold">{{ session('message') }}</strong>

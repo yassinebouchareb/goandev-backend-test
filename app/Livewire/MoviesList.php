@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Genre;
 use App\Models\Movie;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
@@ -18,6 +19,9 @@ class MoviesList extends Component
 
     public $currentMovie;
     public $showingEditModal = false;
+
+    public $searchTerm = '';
+    public $genre = '';
 
     public function delete(Movie $movie)
     {
@@ -51,8 +55,22 @@ class MoviesList extends Component
 
     public function render()
     {
-        return view('livewire.movies-list', [
-            'movies' => Movie::paginate(12),
-        ]);
+        $movies = Movie::where(function($query) {
+            if ($this->searchTerm) {
+                $query->where('title', 'like', '%' .$this->searchTerm. '%');
+            }
+            if($this->genre) {
+                $query->whereHas('genres', function($q) {
+                    $q->where('title', $this->genre);
+                });
+            }
+        });
+
+        $movies = $movies->paginate(12);
+
+        $genres = Genre::all();
+
+        return view('livewire.movies-list', compact('movies', 'genres'));
     }
+
 }
