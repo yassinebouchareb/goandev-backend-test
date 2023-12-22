@@ -14,7 +14,7 @@ class FetchMoviesAndGenres extends Command
      *
      * @var string
      */
-    protected $signature = 'app:fetch-movies-and-genres';
+    protected $signature = 'app:fetch-movies-and-genres {--M|movies}';
 
     /**
      * The console command description.
@@ -34,14 +34,20 @@ class FetchMoviesAndGenres extends Command
      */
     public function handle()
     {
-        $choices = [
-            1 => 'Fetch movies from TMDB',
-            2 => 'Fetch genres from TMDB',
-        ];
+        $defaultChoice = $this->options('movies');
 
-        $this->info('The first time you run this command, fetch the genres first.');
-        $choice = $this->choice('What do you want to do?', $choices, 1);
-        $key    = array_search($choice, $choices);
+        $key = 1;
+
+        if(!$defaultChoice['movies']) {
+            $choices = [
+                1 => 'Fetch movies from TMDB',
+                2 => 'Fetch genres from TMDB',
+            ];
+
+            $this->info('The first time you run this command, fetch the genres first.');
+            $choice = $this->choice('What do you want to do?', $choices, 1);
+            $key    = array_search($choice, $choices);
+        }
 
         switch ($key) {
             case 1: //tmdb - fetch movies

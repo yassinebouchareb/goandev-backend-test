@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Schedule fetching movies and genres every day at 00:00
+        $schedule->command('app:fetch-movies-and-genres --movies')->dailyAt('00:00');
     }
 
     /**
