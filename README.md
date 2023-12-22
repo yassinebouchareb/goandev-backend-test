@@ -34,8 +34,10 @@
     - Run migrations : ./vendor/bin/sail artisan migrate
 
 ### Important
- Before you visit the application in you browser, run this custom command to fetch movies and genres and store them in the database, so you will have some data when you open the app in the browser.
-    ./vendor/bin/sail artisan app:fetch-movies-and-genres
+ Before you visit the application in you browser, run this custom command to fetch movies and genres and store them in the database, so you will have some data when you open the app in the browser
+
+     ./vendor/bin/sail artisan app:fetch-movies-and-genres
+    
  
 ### Run Application
     Make sure laravel sail is runing and simply visit the url localhostin your browser
