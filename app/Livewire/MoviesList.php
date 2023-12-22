@@ -11,7 +11,8 @@ class MoviesList extends Component
 {
     public function delete(Movie $movie)
     {
-        dd($movie);
+        $movie->genres()->detach();
+        $movie->delete();
     }
 
     public function render()
